@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Draggable } from 'react-beautiful-dnd';
 
 const ProjectContainer = styled.div`
   background: white;
@@ -22,14 +23,25 @@ const ProjectDescription = styled.div`
   color: black;
 `;
 
-const Project = ({ project }) => {
+const Project = ({ project, index }) => {
   const { title, description } = project;
 
   return (
-    <ProjectContainer>
-      <ProjectTitle>{ title }</ProjectTitle>
-      <ProjectDescription>{ description }</ProjectDescription>
-    </ProjectContainer>
+    <Draggable draggableId={project.id} index={index}>
+      {
+        (provided) => (
+          <ProjectContainer
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+              <ProjectTitle>{ title }</ProjectTitle>
+              <ProjectDescription>{ description }</ProjectDescription>
+          </ProjectContainer>
+        )
+      }
+
+    </Draggable>
   );
 }
 
@@ -38,6 +50,7 @@ Project.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
   }).isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default Project;

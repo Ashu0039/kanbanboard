@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import { Droppable } from 'react-beautiful-dnd';
 import Project from './Project';
 
 const StageContainer = styled.div`
@@ -32,11 +34,22 @@ const StageName = styled.h3`
 const Stage = ({ stage, projects }) => (
   <StageContainer>
     <StageName>{ stage.title }</StageName>
-    <ProjectList>
+    <Droppable droppableId={stage.id}>
       {
-        projects.map(project => <Project key={project.id} project={project} />)
+        (provided) => (
+          <ProjectList
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {
+              projects.map((project, index) =>
+                <Project key={project.id} project={project} index={index} />)
+            }
+            { provided.placeholder }
+          </ProjectList>
+        )
       }
-    </ProjectList>
+    </Droppable>
   </StageContainer>
 );
 

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import { DragDropContext } from 'react-beautiful-dnd';
 import Stage from './Stage';
 
 const KanbanBoardContainer = styled.div`
@@ -11,23 +13,33 @@ const KanbanBoardContainer = styled.div`
   padding-bottom: 8px;
 `;
 
-const KanbanBoard = (props) => {
-  const { data } = props;
-  const { stageOrder, stages, projects } = data;
+class KanbanBoard extends Component {
+  onDragEnd = (result) => {
+    console.log('result of drag end');
+  }
 
-  return (
-    <KanbanBoardContainer>
-      {
-        stageOrder.map((stageId) => {
-          const stage = stages[stageId];
-          const projectsInStage = stage.projectIds.map(projectId => projects[projectId]);
+  render() {
+    const { data } = this.props;
+    const { stageOrder, stages, projects } = data;
 
-          return <Stage stage={stage} projects={projectsInStage} />
-        })
-      }
-    </KanbanBoardContainer>
-  );
-};
+    return (
+      <DragDropContext
+        onDragEnd={this.onDragEnd}
+      >
+        <KanbanBoardContainer>
+          {
+            stageOrder.map((stageId) => {
+              const stage = stages[stageId];
+              const projectsInStage = stage.projectIds.map(projectId => projects[projectId]);
+  
+              return <Stage key={stage.id} stage={stage} projects={projectsInStage} />
+            })
+          }
+        </KanbanBoardContainer>
+      </DragDropContext>
+    );
+  }
+}
 
 KanbanBoard.propTypes = {
   stages: PropTypes.arrayOf(PropTypes.shape({})),
