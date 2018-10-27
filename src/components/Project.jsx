@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 
 const ProjectContainer = styled.div`
-  background: white;
+  background: ${props => props.isDragging ? 'lightyellow' : 'white'};
+  transition: background 0.2s ease;
   border: 1px solid lightgray;
   border-radius: 4px;
   padding: 6px;
@@ -29,11 +30,12 @@ const Project = ({ project, index }) => {
   return (
     <Draggable draggableId={project.id} index={index}>
       {
-        (provided) => (
+        (provided, snapshot) => (
           <ProjectContainer
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
+            isDragging={snapshot.isDragging}
           >
               <ProjectTitle>{ title }</ProjectTitle>
               <ProjectDescription>{ description }</ProjectDescription>

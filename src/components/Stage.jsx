@@ -13,7 +13,6 @@ const StageContainer = styled.div`
   background: #dedede;
   border-radius: 4px;
   margin: 12px 6px;
-  padding: 0 12px;
   width: auto;
   min-width: 240px;
 
@@ -29,12 +28,17 @@ const StageContainer = styled.div`
 const ProjectList = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
   min-height: 200px;
+  background: ${props => props.isDraggingOver ? 'lightblue' : 'inherit'};
+  transition: background 0.2s ease;
+  padding: 12px;
 `;
 
 const StageName = styled.h3`
   margin: 6px 0;
   color: #020202;
+  padding: 0 12px;
 `;
 
 const Stage = ({ stage, projects }) => (
@@ -42,10 +46,11 @@ const Stage = ({ stage, projects }) => (
     <StageName>{ stage.title }</StageName>
     <Droppable droppableId={stage.id}>
       {
-        (provided) => (
+        (provided, snapshot) => (
           <ProjectList
             ref={provided.innerRef}
             {...provided.droppableProps}
+            isDraggingOver={snapshot.isDraggingOver}
           >
             {
               projects.map((project, index) =>
