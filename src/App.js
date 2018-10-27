@@ -15,11 +15,20 @@ const AppContainer = styled.div`
 class App extends Component {
   state = initialData
 
+  updateStage = (stageId, newStage) => {
+    console.log('updating stage --> ', newStage);
+    const { stages } = this.state;
+    const updatedStages = {...stages};
+    updatedStages[stageId] = newStage;
+
+    this.setState({ stages: updatedStages });
+  }
+
   render() {
     return (
       <AppContainer>
         <Header />
-        <KanbanBoard data={this.state} />
+        <KanbanBoard data={this.state} updateStage={this.updateStage} />
       </AppContainer>
     );
   }

@@ -15,7 +15,64 @@ const KanbanBoardContainer = styled.div`
 
 class KanbanBoard extends Component {
   onDragEnd = (result) => {
-    console.log('result of drag end');
+    console.log('result of drag end --> ', result);
+
+    const { source, destination, draggableId } = result;
+
+    // Dropped nowhere
+    if (!destination) return;
+
+    // Dropped in same place
+    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+
+    if (source.droppableId === destination.droppableId) {
+      this.reArrangeProjectsInSameStage(result);
+      return;
+    }
+
+    const { data } = this.props;
+    const { stages } = data;
+    const sourceStage = stages[source.droppableId];
+    const destinationStage = stages[destination.droppableId];
+
+    const { projectIds: projectsInSource } = sourceStage;
+    const { projectIds: projectsInDestination } = destinationStage;
+
+    // Remove the dragged project from source projects and put in projects of destination stage
+    const afterRemovingDraggedProject = [...projectsInSource.slice(0, source.index), ...projectsInSource.slice(source.index + 1)];
+    const addingDraggedProject = [...projectsInDestination.slice(0, destination.index), draggableId, ...projectsInDestination.slice(destination.index)];
+
+    const updatedSourceStage = {
+      ...sourceStage,
+      projectIds: afterRemovingDraggedProject,
+    };
+
+    const updatedDestinationStage = {
+      ...destinationStage,
+      projectIds: addingDraggedProject,
+    };
+
+    this.props.updateStage(sourceStage.id, updatedSourceStage);
+    this.props.updateStage(destinationStage.id, updatedDestinationStage);
+  }
+
+  reArrangeProjectsInSameStage = (result) => {
+    const { source, destination, draggableId } = result;
+
+    const { data } = this.props;
+    const { stages } = data;
+
+    const sourceStage = stages[source.droppableId];
+    const newProjectIds = Array.from(sourceStage.projectIds);
+    newProjectIds.splice(source.index, 1);
+    newProjectIds.splice(destination.index, 0, draggableId);
+
+    const updatedStage = {
+      ...sourceStage,
+      projectIds: newProjectIds,
+    };
+
+    this.props.updateStage(sourceStage.id, updatedStage);
   }
 
   render() {
@@ -43,10 +100,12 @@ class KanbanBoard extends Component {
 
 KanbanBoard.propTypes = {
   stages: PropTypes.arrayOf(PropTypes.shape({})),
+  updateStage: PropTypes.func,
 };
 
 KanbanBoard.defaultProps = {
   stages: [],
+  updateStage: () => {},
 };
 
 export default KanbanBoard;

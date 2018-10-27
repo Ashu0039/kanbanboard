@@ -7,6 +7,8 @@ import Project from './Project';
 
 const StageContainer = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   border: 2px solid lightgray;
   background: #dedede;
   border-radius: 4px;
@@ -24,7 +26,11 @@ const StageContainer = styled.div`
   }
 `;
 
-const ProjectList = styled.div``;
+const ProjectList = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+`;
 
 const StageName = styled.h3`
   margin: 6px 0;
