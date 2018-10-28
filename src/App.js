@@ -14,6 +14,8 @@ const AppContainer = styled.div`
   flex-direction: column;
 `;
 
+const randomNumber = () => Math.floor(Math.random() * 100 + 1)
+
 class App extends Component {
   state = {
     ...initialData,
@@ -33,6 +35,39 @@ class App extends Component {
 
   addNewProject = ({ projectName, description }) => {
     console.log('add new project --> ', projectName, description);
+    if (!projectName) return;
+
+    const projectDescription = description || 'No Description';
+
+    const newId = randomNumber();
+    const newProjectId = `project-${newId}`;
+    const newProject = {
+      id: newProjectId,
+      title: projectName,
+      description: projectDescription,
+    };
+
+    // Add the new project into planning stage
+    const { projects, stages } = this.state;
+    const copyProjects = { ...projects };
+    copyProjects[newProjectId] = newProject;
+
+    const planningStage = stages['planning'];
+    const { projectIds: projectsInPlanning } = planningStage;
+    const addedNewProjectId = [...projectsInPlanning, newProjectId];
+    const updatedPlanningStage = {
+      ...planningStage,
+      projectIds: addedNewProjectId,
+    };
+
+    const copyStages = { ...stages };
+    copyStages['planning'] = updatedPlanningStage;
+
+    this.setState({
+      stages: copyStages,
+      projects: copyProjects,
+    });
+
     this.closeAddProject();
   }
 

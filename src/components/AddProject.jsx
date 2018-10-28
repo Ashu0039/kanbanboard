@@ -32,6 +32,7 @@ class AddProject extends Component {
   onSubmit = () => {
     const { projectName, description } = this.state;
     this.props.onSubmit({ projectName, description });
+    this.resetFields();
   }
 
   onCancel = () => {
