@@ -9,7 +9,7 @@ const HeaderContainer = styled.div`
   padding: 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  // justify-content: space-between;
   box-sizing: border-box;
 `;
 
@@ -39,6 +39,8 @@ const AddProjectButton = styled.button`
   cursor: pointer;
   outline: none;
   border: 1px solid orange;
+  margin-left: auto;
+  margin-right: 12px;
 
   &:hover {
     background: white;
