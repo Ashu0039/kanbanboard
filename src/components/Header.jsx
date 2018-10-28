@@ -46,23 +46,44 @@ const AddProjectButton = styled.button`
   }
 `;
 
-const Header = ({ openAddProject, noOfProjects }) => (
+const AddStageButton = styled.button`
+  height: 42px;
+  border-radius: 21px;
+  padding: 0 18px;
+  font-size: 18px;
+  background: purple;
+  color: white;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid purple;
+
+  &:hover {
+    background: white;
+    color: purple;
+  }
+`;
+
+const Header = ({ openAddProject, openAddStage, noOfProjects }) => (
   <HeaderContainer>
     <TitleContainer>
       <Title>Mission Control</Title>
       <CountStatus>{ `${noOfProjects || 'No'} projects ongoing.` }</CountStatus>
     </TitleContainer>
     <AddProjectButton onClick={() => openAddProject()}>Add Project</AddProjectButton>
+    <AddStageButton onClick={() => openAddStage()}>Add Stage</AddStageButton>
   </HeaderContainer>
 );
 
 Header.propTypes = {
   openAddProject: PropTypes.func,
+  openAddStage: PropTypes.func,
   noOfProjects: PropTypes.number,
 };
 
 Header.defaultProps = {
   openAddProject: () => {},
+  openAddStage: () => {},
   noOfProjects: 0,
 };
 

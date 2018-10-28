@@ -6,6 +6,7 @@ import Header from './components/Header';
 import KanbanBoard from './components/KanbanBoard';
 import initialData from './initialData';
 import AddProject from './components/AddProject';
+import AddStage from './components/AddStage';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -22,6 +23,7 @@ class App extends Component {
     showToast: false,
     toastMessage: '',
     addProject: false,
+    addStage: false,
   }
 
   updateStage = (stageId, newStage) => {
@@ -31,6 +33,27 @@ class App extends Component {
     updatedStages[stageId] = newStage;
 
     this.setState({ stages: updatedStages });
+  }
+
+  addNewStage = ({ stageName }) => {
+    if (!stageName) return;
+
+    console.log('add new stage with name --> ', stageName);
+    const newId = randomNumber();
+    const newStageId = `stage-${newId}`;
+    const newStage = {
+      id: newStageId,
+      title: stageName,
+      projectIds: [],
+    };
+
+    const { stages, stageOrder } = this.state;
+    const copyStages = { ...stages };
+    copyStages[newStageId] = newStage;
+    const newStageOrder = [...stageOrder, newStageId];
+    this.setState({ stages: copyStages, stageOrder: newStageOrder });
+
+    this.closeAddStage();
   }
 
   addNewProject = ({ projectName, description }) => {
@@ -75,6 +98,10 @@ class App extends Component {
 
   closeAddProject = () => this.setState({ addProject: false })
 
+  openAddStage = () => this.setState({ addStage: true })
+
+  closeAddStage = () => this.setState({ addStage: false })
+
   showToastMessage = (message) => {
     this.setState({ showToast: true, toastMessage: message });
   }
@@ -89,6 +116,7 @@ class App extends Component {
       <AppContainer>
         <Header
           openAddProject={this.openAddProject}
+          openAddStage={this.openAddStage}
           noOfProjects={noOfProjects}
         />
         <KanbanBoard
@@ -110,6 +138,11 @@ class App extends Component {
           showAddProject={this.state.addProject}
           onCancel={this.closeAddProject}
           onSubmit={this.addNewProject}
+        />
+        <AddStage
+          showAddStage={this.state.addStage}
+          onCancel={this.closeAddStage}
+          onSubmit={this.addNewStage}
         />
       </AppContainer>
     );
