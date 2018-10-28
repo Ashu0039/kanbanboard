@@ -46,11 +46,11 @@ const AddProjectButton = styled.button`
   }
 `;
 
-const Header = ({ openAddProject }) => (
+const Header = ({ openAddProject, noOfProjects }) => (
   <HeaderContainer>
     <TitleContainer>
       <Title>Mission Control</Title>
-      <CountStatus>4 projects ongoing.</CountStatus>
+      <CountStatus>{ `${noOfProjects || 'No'} projects ongoing.` }</CountStatus>
     </TitleContainer>
     <AddProjectButton onClick={() => openAddProject()}>Add Project</AddProjectButton>
   </HeaderContainer>
@@ -58,10 +58,12 @@ const Header = ({ openAddProject }) => (
 
 Header.propTypes = {
   openAddProject: PropTypes.func,
+  noOfProjects: PropTypes.number,
 };
 
 Header.defaultProps = {
   openAddProject: () => {},
+  noOfProjects: 0,
 };
 
 export default Header;

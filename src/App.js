@@ -82,10 +82,14 @@ class App extends Component {
   hideToastMessage = () => this.setState({ showToast: false })
 
   render() {
+    const { projects } = this.state;
+    const noOfProjects = Object.keys(projects).length;
+
     return (
       <AppContainer>
         <Header
           openAddProject={this.openAddProject}
+          noOfProjects={noOfProjects}
         />
         <KanbanBoard
           data={this.state}
