@@ -31,7 +31,7 @@ class KanbanBoard extends Component {
     }
 
     const { data } = this.props;
-    const { stages } = data;
+    const { stages, projects } = data;
     const sourceStage = stages[source.droppableId];
     const destinationStage = stages[destination.droppableId];
 
@@ -54,13 +54,18 @@ class KanbanBoard extends Component {
 
     this.props.updateStage(sourceStage.id, updatedSourceStage);
     this.props.updateStage(destinationStage.id, updatedDestinationStage);
+
+    const projectMoved = projects[draggableId];
+
+    const toastMessage = `${projectMoved.title} moved from ${sourceStage.title} to ${destinationStage.title} stage!`;
+    this.props.showToastMessage(toastMessage);
   }
 
   reArrangeProjectsInSameStage = (result) => {
     const { source, destination, draggableId } = result;
 
     const { data } = this.props;
-    const { stages } = data;
+    const { stages, projects } = data;
 
     const sourceStage = stages[source.droppableId];
     const newProjectIds = Array.from(sourceStage.projectIds);
@@ -73,6 +78,11 @@ class KanbanBoard extends Component {
     };
 
     this.props.updateStage(sourceStage.id, updatedStage);
+
+    const projectMoved = projects[draggableId];
+
+    const toastMessage = `${projectMoved.title} repositioned in ${sourceStage.title} stage.`;
+    this.props.showToastMessage(toastMessage);
   }
 
   render() {
@@ -101,11 +111,13 @@ class KanbanBoard extends Component {
 KanbanBoard.propTypes = {
   stages: PropTypes.arrayOf(PropTypes.shape({})),
   updateStage: PropTypes.func,
+  showToastMessage: PropTypes.func,
 };
 
 KanbanBoard.defaultProps = {
   stages: [],
   updateStage: () => {},
+  showToastMessage: () => {},
 };
 
 export default KanbanBoard;

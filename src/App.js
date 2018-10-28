@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import Header from './components/Header';
 import KanbanBoard from './components/KanbanBoard';
@@ -13,7 +14,11 @@ const AppContainer = styled.div`
 `;
 
 class App extends Component {
-  state = initialData
+  state = {
+    ...initialData,
+    showToast: false,
+    toastMessage: '',
+  }
 
   updateStage = (stageId, newStage) => {
     console.log('updating stage --> ', newStage);
@@ -24,11 +29,31 @@ class App extends Component {
     this.setState({ stages: updatedStages });
   }
 
+  showToastMessage = (message) => {
+    this.setState({ showToast: true, toastMessage: message });
+  }
+
+  hideToastMessage = () => this.setState({ showToast: false })
+
   render() {
     return (
       <AppContainer>
         <Header />
-        <KanbanBoard data={this.state} updateStage={this.updateStage} />
+        <KanbanBoard
+          data={this.state}
+          updateStage={this.updateStage}
+          showToastMessage={this.showToastMessage}
+        />
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={this.state.showToast}
+          autoHideDuration={6000}
+          message={this.state.toastMessage}
+          onClose={this.hideToastMessage}
+        />
       </AppContainer>
     );
   }
