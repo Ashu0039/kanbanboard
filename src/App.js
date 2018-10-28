@@ -5,6 +5,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Header from './components/Header';
 import KanbanBoard from './components/KanbanBoard';
 import initialData from './initialData';
+import AddProject from './components/AddProject';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -18,6 +19,7 @@ class App extends Component {
     ...initialData,
     showToast: false,
     toastMessage: '',
+    addProject: false,
   }
 
   updateStage = (stageId, newStage) => {
@@ -29,6 +31,15 @@ class App extends Component {
     this.setState({ stages: updatedStages });
   }
 
+  addNewProject = ({ projectName, description }) => {
+    console.log('add new project --> ', projectName, description);
+    this.closeAddProject();
+  }
+
+  openAddProject = () =>  this.setState({ addProject: true })
+
+  closeAddProject = () => this.setState({ addProject: false })
+
   showToastMessage = (message) => {
     this.setState({ showToast: true, toastMessage: message });
   }
@@ -38,7 +49,9 @@ class App extends Component {
   render() {
     return (
       <AppContainer>
-        <Header />
+        <Header
+          openAddProject={this.openAddProject}
+        />
         <KanbanBoard
           data={this.state}
           updateStage={this.updateStage}
@@ -53,6 +66,11 @@ class App extends Component {
           autoHideDuration={6000}
           message={this.state.toastMessage}
           onClose={this.hideToastMessage}
+        />
+        <AddProject
+          showAddProject={this.state.addProject}
+          onCancel={this.closeAddProject}
+          onSubmit={this.addNewProject}
         />
       </AppContainer>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.div`
@@ -45,14 +46,22 @@ const AddProjectButton = styled.button`
   }
 `;
 
-const Header = () => (
+const Header = ({ openAddProject }) => (
   <HeaderContainer>
     <TitleContainer>
       <Title>Mission Control</Title>
       <CountStatus>4 projects ongoing.</CountStatus>
     </TitleContainer>
-    <AddProjectButton>Add Project</AddProjectButton>
+    <AddProjectButton onClick={() => openAddProject()}>Add Project</AddProjectButton>
   </HeaderContainer>
 );
+
+Header.propTypes = {
+  openAddProject: PropTypes.func,
+};
+
+Header.defaultProps = {
+  openAddProject: () => {},
+};
 
 export default Header;

@@ -1,18 +1,18 @@
 const initialData = {
   stages: {
-    'pitching': {
-      id: 'pitching',
-      title: 'Pitching',
+    'planning': {
+      id: 'planning',
+      title: 'Planning',
       projectIds: ['project-1', 'project-2'],
     },
-    'ongoing': {
-      id: 'ongoing',
-      title: 'Ongoing',
+    'in-progress': {
+      id: 'in-progress',
+      title: 'In Progress',
       projectIds: ['project-3'],
     },
-    'post-production': {
-      id: 'post-production',
-      title: 'Post Production',
+    'testing': {
+      id: 'testing',
+      title: 'Testing',
       projectIds: ['project-4'],
     },
     'completed': {
@@ -21,7 +21,7 @@ const initialData = {
       projectIds: [],
     }
   },
-  stageOrder: ['pitching', 'ongoing', 'post-production', 'completed'],
+  stageOrder: ['planning', 'in-progress', 'testing', 'completed'],
   projects: {
     'project-1': {
       id: 'project-1',
